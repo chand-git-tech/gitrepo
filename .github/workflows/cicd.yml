@@ -1,0 +1,25 @@
+name: CI-CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Build Image
+      run: docker build -t myapp .
+
+    - name: Tag Image
+      run: docker tag myapp snowjohn0101200/myapp:latest
+
+    - name: Login to DockerHub
+      run: echo "${{ secrets.docker_key }}" | docker login -u snowjohn0101200 --password-stdin
+
+    - name: Push Image
+      run: docker push snowjohn0101200/myapp:latest

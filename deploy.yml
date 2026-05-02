@@ -1,0 +1,13 @@
+- hosts: web
+  become: yes
+  tasks:
+
+    - name: Pull image
+      command: podman pull docker.io/snowjohn0101200/myapp:latest
+
+    - name: Stop old container
+      command: podman rm -f myapp
+      ignore_errors: yes
+
+    - name: Run container
+      command: podman run -d -p 80:80 --name myapp docker.io/snowjohn0101200/myapp:latest
